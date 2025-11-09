@@ -1,7 +1,10 @@
 """Emprically calculate the cost to spawn a minion based on its attributes."""
 
 import random
+from pathlib import Path
+
 import pandas as pd
+import yaml
 
 
 class Lair:
@@ -114,15 +117,20 @@ def run_trial(
 
 def main():
     """Main function"""
-    random.seed(42)
-    station = Station(
-        cost_per_tap=1500, level_1_chance=0.4, level_2_chance=0.2
-    )
-    target_minion_level = 4
-    num_trials = 1000
+    config_path = Path(__file__).parent / "config.yaml"
+    with open(config_path, "r", encoding="utf-8") as fh:
+        cfg = yaml.safe_load(fh)
+
+    random.seed(cfg["random_seed"])
+    station = Station(**cfg["station"])
+    target_minion_level = cfg["simulation"]["target_minion_level"]
+    num_trials = cfg["simulation"]["num_trials"]
     total_costs = []
     for _ in range(num_trials):
-        lair = Lair(max_minion_level=target_minion_level, max_material_level=2)
+        lair = Lair(
+            max_minion_level=cfg["simulation"]["target_minion_level"],
+            max_material_level=cfg["simulation"]["max_material_level"],
+        )
         cost = run_trial(station, lair, target_minion_level)
         total_costs.append(cost)
 

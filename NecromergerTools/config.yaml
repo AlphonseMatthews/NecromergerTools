@@ -1,0 +1,11 @@
+random_seed: 42
+
+station:
+  cost_per_tap: 300
+  level_1_chance: 0.6
+  level_2_chance: 0.4
+
+simulation:
+  target_minion_level: 6
+  num_trials: 1000
+  max_material_level: 2
