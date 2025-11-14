@@ -137,7 +137,11 @@ def main():
     totals_costs_series = pd.Series(total_costs)
     print(
         f"Cost to spawn minion level {target_minion_level}:\n"
-        f"{totals_costs_series.describe().astype(int)}"
+        + str(
+            totals_costs_series.describe(
+                percentiles=[0.25, 0.5, 0.75, 0.98]
+            ).astype(int)
+        )
     )
 
 
